@@ -33,9 +33,7 @@ export default function Home() {
 
   return (
     
-    <div className="flex min-h-screen bg-red transition-all duration-300">
-
-
+    <div className="flex   bg-gradient-to-r from-red-800 to-pink-300 min-h-screen bg-pink transition-all duration-300">
 
         <SideBar
         isOpen={isOpen}

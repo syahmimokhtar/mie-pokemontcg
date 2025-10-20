@@ -11,7 +11,6 @@
   "dependencies": {
     "@tcgdex/sdk": "^2.7.1",
     "axios": "^1.12.2",
-    "flowbite": "^3.1.2",
     "flowbite-react": "^0.12.9",
     "next": "15.5.5",
     "pokemontcgsdk": "^2.0.0",

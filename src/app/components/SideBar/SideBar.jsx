@@ -9,7 +9,7 @@ const SideBar = ({isOpen, setIsOpen, search, setSearch}  ) => {
   return (
     <>
  <div
-      className={`h-auto bg-[url(../../public/pokedex.jpg)] shadow-md transition-all duration-300 ease-in-out ${
+      className={`h-auto bg-[url(../../public/pokedex.jpg)] bg-cover shadow-md transition-all duration-300 ease-in-out ${
         isOpen ? "w-64" : "w-12"
       }`}
     >
@@ -18,7 +18,7 @@ const SideBar = ({isOpen, setIsOpen, search, setSearch}  ) => {
         {isOpen && <h2 className="text-lg font-bold text-black">Pokemon TCG</h2>}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="font-bold px-2 rounded-sm border border-gray-300 text-black hover:border-transparent hover:bg-black hover:text-white"
+          className="font-bold px-2 rounded-sm border  text-black "
         >
           {isOpen ? "<" : ">"}
         </button>
