@@ -64,7 +64,7 @@ const CardGrid = ({ search = "" }) => {
       {isLoading ? (
         <div className="text-center text-white py-10">Loading...</div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
+        <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
           {cards.length > 0 ? (
             cards.map((c) => (
               <Card key={c.id} name={c.name} image={c.image} />
