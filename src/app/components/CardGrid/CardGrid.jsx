@@ -20,7 +20,6 @@ const CardGrid = ({ search = "" }) => {
         // no search → use paginated API
         url = `https://api.tcgdex.net/v2/en/cards?pagination:page=${pageNumber}&pagination:itemsPerPage=${itemsPerPage}`;
       } else {
-        console.log('guna search')
         // search → use search API
         url = `https://api.tcgdex.net/v2/en/cards?name=${search}`;
       }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "./components/SideBar/SideBar";
 import CardGrid from "./components/CardGrid/CardGrid";
+import Head from 'next/head';
 
 
 export default function Home() {
@@ -31,14 +32,18 @@ export default function Home() {
   }, []);
 
   return (
+    
     <div className="flex min-h-screen bg-red transition-all duration-300">
+
+
+
         <SideBar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         search={search}
         setSearch={setSearch}
       />
-      
+
 
       <main
         className={`transition-all duration-300 p-6 flex-1 ${
