@@ -5,7 +5,7 @@ const Card = ({ name, image }) => {
   const [imgSrc, setImgSrc] = useState(`${image}/high.png`);
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300  transition-transform duration-500  hover:-translate-y-2 hover:scale-110 hover:shadow-2xl cursor-pointer">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden   transition-transform duration-500  hover:-translate-y-2 hover:scale-110 hover:shadow-2xl cursor-pointer">
       <Image
       priority={true}
         width={1500}

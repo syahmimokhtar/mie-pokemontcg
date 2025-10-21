@@ -26,9 +26,12 @@ const CardGrid = ({ search = "" }) => {
 
       const response = await axios.get(url, { headers });
 
+      //REMOVE JSON DATA WITHOUT IMAGE properties
       const filtered = response.data.filter(
         (card) => typeof card.image === "string" && card.image.trim() !== ""
       );
+
+      // console.log(filtered)
 
       setCards(filtered);
 
