@@ -1,76 +1,91 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Card from "../Card/Card";
 import axios from "axios";
+import Card from "../Card/Card";
 
-const CardGrid = ({ search = "" }) => {
+const CardGrid = ({ isOpen, cards: externalCards }) => {
   const [cards, setCards] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDefault, setIsDefault] = useState(true); // ✅ New flag
   const itemsPerPage = 100;
 
-  const fetchCards = async (pageNumber) => {
+  // ✅ Fetch default cards (used on load and when no search results)
+  const fetchDefaultCards = async (pageNumber = 1) => {
     setIsLoading(true);
     try {
-      const headers = { "Content-Type": "application/json" };
-      let url = "";
+      const url = `https://api.tcgdex.net/v2/en/cards?pagination:page=${pageNumber}&pagination:itemsPerPage=${itemsPerPage}`;
+      const response = await axios.get(url);
 
-      if (search.trim() === "") {
-        // no search → use paginated API
-        url = `https://api.tcgdex.net/v2/en/cards?pagination:page=${pageNumber}&pagination:itemsPerPage=${itemsPerPage}`;
-      } else {
-        // search → use search API
-        url = `https://api.tcgdex.net/v2/en/cards?name=${search}`;
-      }
-
-      const response = await axios.get(url, { headers });
-
-      //REMOVE JSON DATA WITHOUT IMAGE properties
       const filtered = response.data.filter(
         (card) => typeof card.image === "string" && card.image.trim() !== ""
       );
 
-      // console.log(filtered)
-
       setCards(filtered);
-
-      // ✅ If paginated request, estimate total pages
-      if (search.trim() === "") {
-        const estimatedTotalCards = 1500; // adjust if you know the real count
-        setTotalPages(Math.ceil(estimatedTotalCards / itemsPerPage));
-      } else {
-        // For search, only 1 page of results
-        setTotalPages(1);
-      }
-
-    } catch (error) {
-      console.log("Error fetching cards", error);
+         setIsDefault(true); // ✅ Mark as default mode
+      const estimatedTotalCards = 1500; // rough estimate
+      setTotalPages(Math.ceil(estimatedTotalCards / itemsPerPage));
+    } catch (err) {
+      console.error("❌ Error fetching default cards:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // ✅ Load default cards on first render
   useEffect(() => {
-    fetchCards(page);
-  }, [page, search]);
+    fetchDefaultCards(1);
+  }, []);
 
+ useEffect(() => {
+  // ✅ Fetch default cards on load
+  fetchDefaultCards(1);
+
+  const handleCardsUpdate = (e) => {
+  const newCards = e.detail;
+  if (newCards && newCards.length > 0) {
+    setCards(newCards);
+    setIsDefault(false); // ✅ disable pagination for search
+  } else {
+    fetchDefaultCards(1);
+  }
+};
+
+
+  window.addEventListener("cardsUpdated", handleCardsUpdate);
+
+  return () => {
+    window.removeEventListener("cardsUpdated", handleCardsUpdate);
+  };
+}, []);
+
+
+  // ✅ Pagination
   const handleNext = () => {
-    if (page < totalPages) setPage((prev) => prev + 1);
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setPage(newPage);
+      fetchDefaultCards(newPage);
+    }
   };
 
-  const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
+  const handlePrev = () => {
+    if (page > 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      fetchDefaultCards(newPage);
+    }
+  };
 
   return (
-    <div className="w-full">
+    <div className="flex-1 bg-gray-900 min-h-screen">
       {isLoading ? (
         <div className="text-center text-white py-10">Loading...</div>
       ) : (
-        <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
           {cards.length > 0 ? (
-            cards.map((c) => (
-              <Card key={c.id} name={c.name} image={c.image} />
-            ))
+            cards.map((c) => <Card key={c.id} name={c.name} image={c.image} />)
           ) : (
             <div className="col-span-full text-center text-gray-400">
               No Pokémon found
@@ -79,7 +94,8 @@ const CardGrid = ({ search = "" }) => {
         </div>
       )}
 
-      {search.trim() === "" && (
+      {/* ✅ Only show pagination when showing default cards */}
+      {isDefault && (
         <div className="flex justify-center items-center gap-4 my-6">
           <button
             onClick={handlePrev}
@@ -103,6 +119,7 @@ const CardGrid = ({ search = "" }) => {
           </button>
         </div>
       )}
+
     </div>
   );
 };
