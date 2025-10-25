@@ -15,9 +15,7 @@ const Card = ({ name, image }) => {
         className="w-auto h-auto "
         onError={() => setImgSrc(image)} // fallback to base URL if /high.png fails
       />
-      {/* <div className="p-4">
-        <h2 className="text-xl text-center text-black font-semibold mb-2">{name}</h2>
-      </div> */}
+   
     </div>
   );
 };

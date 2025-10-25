@@ -17,10 +17,11 @@ const CardGrid = ({ isOpen, cards: externalCards }) => {
     try {
       const url = `https://api.tcgdex.net/v2/en/cards?pagination:page=${pageNumber}&pagination:itemsPerPage=${itemsPerPage}`;
       const response = await axios.get(url);
-
+      
       const filtered = response.data.filter(
         (card) => typeof card.image === "string" && card.image.trim() !== ""
       );
+      console.log(filtered)
 
       setCards(filtered);
          setIsDefault(true); // ✅ Mark as default mode
@@ -85,7 +86,9 @@ const CardGrid = ({ isOpen, cards: externalCards }) => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
           {cards.length > 0 ? (
-            cards.map((c) => <Card key={c.id} name={c.name} image={c.image} />)
+            cards.map((c) => 
+            
+            <Card key={c.id} name={c.name} image={c.image} />)
           ) : (
             <div className="col-span-full text-center text-gray-400">
               No Pokémon found

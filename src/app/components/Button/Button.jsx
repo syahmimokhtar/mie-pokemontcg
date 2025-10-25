@@ -3,7 +3,7 @@ import React from 'react'
 const Button = ({onClick, disabled, isLoading,label, variant }) => {
 
       const baseStyle =
-    "w-full py-2 px-4 rounded-md font-semibold transition disabled:opacity-50 mb-4";
+    "w-full py-2 px-4 rounded-md font-semibold transition disabled:opacity-50 mb-4 ";
 
   // ✅ Variant styles
   const variants = {

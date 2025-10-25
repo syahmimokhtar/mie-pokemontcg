@@ -74,7 +74,6 @@ const handleNameSearch = async () => {
     );
 
 
-    console.log(filtered);
 
     // 🔥 Dispatch event with search results
     window.dispatchEvent(new CustomEvent("cardsUpdated", { detail: filtered }));
