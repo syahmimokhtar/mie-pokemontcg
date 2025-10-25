@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import CardGrid from "../CardGrid/CardGrid";
+import Button from "../Button/Button";
+
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -74,7 +75,7 @@ const handleNameSearch = async () => {
 
 
     console.log(filtered);
-    
+
     // 🔥 Dispatch event with search results
     window.dispatchEvent(new CustomEvent("cardsUpdated", { detail: filtered }));
   } catch (err) {
@@ -101,6 +102,19 @@ const handleSetSearch = async () => {
     setIsLoading(false);
   }
 };
+
+const handleReset = () => {
+  setLocalSearch("");
+  setSelectedSeries(null);
+  setSelectedSet(null);
+  setSets([]);
+  setIsDisabled(true);
+
+  // Notify CardGrid to reload default cards
+  const event = new CustomEvent("cardsUpdated", { detail: [] });
+  window.dispatchEvent(event);
+};
+
 
 
   // ✅ Unified Search (1 button only)
@@ -205,13 +219,23 @@ const handleSetSearch = async () => {
         {/* Single Search Button */}
         {isOpen && (
           <div className="p-4">
-            <button
+            <Button
               onClick={handleSearch}
-              disabled={isLoading }
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md disabled:opacity-50"
-            >
-              {isLoading ? "Searching..." : "Search"}
-            </button>
+              disabled={isLoading}
+              isLoading={isLoading}
+              label="Search Pokémon"
+              variant="primary"
+
+            />
+
+           
+            
+             <Button
+              onClick={handleReset}
+              label="Reset"
+              variant="secondary"
+            />
+
           </div>
         )}
       </div>
