@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../Card/Card";
 
-const CardGrid = ({ isOpen, cards: externalCards }) => {
+const CardGrid = ({ isOpen }) => {
   const [cards, setCards] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -21,7 +21,6 @@ const CardGrid = ({ isOpen, cards: externalCards }) => {
       const filtered = response.data.filter(
         (card) => typeof card.image === "string" && card.image.trim() !== ""
       );
-      console.log(filtered)
 
       setCards(filtered);
          setIsDefault(true); // ✅ Mark as default mode
